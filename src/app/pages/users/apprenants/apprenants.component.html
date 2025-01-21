@@ -1,0 +1,285 @@
+<app-sidebar></app-sidebar>
+<div class="main-content">
+    <div class="filter-section">
+        <div class="import-csv-container">
+            <button (click)="openApprenantCSVImportDialog()" class="button">Importer CSV Apprenants</button>
+        </div>
+        
+
+        
+        <div class="filter-right">
+            <label for="filter-right">Cohorte: </label>
+            <select [(ngModel)]="selectedCohorte" (change)="onCohorteChange()" class="filter-select">
+                <option *ngFor="let cohorte of cohortes" [value]="cohorte.id">{{ cohorte.nom }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="notificationMessage" class="notification" [ngClass]="notificationClass">
+        {{ notificationMessage }}
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Prénom et Nom</th>
+                    <th>Matricule</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Affichage des apprenants -->
+                <tr *ngFor="let apprenant of displayedApprenants">
+                    <td>
+                        <div class="name-checkbox-container">
+                            <input
+                                type="checkbox"
+                                [(ngModel)]="apprenant.selected"
+                                (change)="onApprenantSelect(apprenant, $event)">
+                            <div *ngIf="apprenant.photo; else avatar">
+                                <img [src]= "'http://localhost:8000/api/photos/' + apprenant.photo" alt="Photo" class="apprenant-photo" />
+                            </div>
+                            <ng-template #avatar>
+                                <div class="avatar">
+                                    <!-- Création de l'avatar avec les initiales -->
+                                    <span>{{ getInitials(apprenant.prenom, apprenant.nom) }}</span>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </td>
+                    <td>{{ apprenant.prenom }} {{ apprenant.nom }}</td>
+                    <td>{{ apprenant.matricule }}</td>
+                    <td>{{ apprenant.email }}</td>
+                    <td>{{ apprenant.telephone }}</td>
+                    <td [ngClass]="{'active': apprenant.is_active, 'blocked': !apprenant.is_active}">
+                        {{ apprenant.is_active ? 'Actif' : 'Bloqué' }}
+                    </td>
+                    <td class="actions">
+                        <!-- Icône de modification -->
+                        <button (click)="editApprenant(apprenant)" class="action-button">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                                            <!-- Icône de blocage/déblocage pour un apprenant -->
+                        <button (click)="confirmBlockOrUnblockApprenant(apprenant)" class="action-button">
+                            <i [class]="apprenant.is_active ? 'fas fa-user-check' : 'fas fa-user-lock'"></i>
+                        </button>
+                        
+                        
+
+                        <!-- Icône de suppression -->
+                        <button (click)="deleteApprenant(apprenant)" class="action-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+                        <!-- Icône de vue -->
+                        <button (click)="viewApprenant(apprenant)" class="action-button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="button-container">
+        <button
+            *ngIf="selectedApprenants.length > 0"
+            (click)="bulkDelete()"
+            class="button">
+            Supprimer Sélection
+        </button>
+        <button
+            *ngIf="selectedApprenants.length > 0"
+            (click)="bulkBlock()"
+            class="button">
+            Bloquer Sélection
+        </button>
+    </div>
+    <div class="pagination">
+        <button (click)="changePage(page - 1)" [disabled]="page === 1">Précédent</button>
+        <span>Page {{ page }} sur {{ Math.ceil(totalApprenants / size) }}</span>
+        <button (click)="changePage(page + 1)" [disabled]="page === Math.ceil(totalApprenants / size)">Suivant</button>
+    </div>
+    
+      
+    <!-- Modal de détails de l'apprenant -->
+    <div *ngIf="showApprenantModal" class="apprenant-modal">
+        <div class="apprenant-modal-content">
+            <span class="close-button" (click)="closeApprenantModal()">&times;</span>
+            <h2>Détails de l'Apprenant</h2>
+            <p><strong>Nom:</strong> {{ selectedApprenant?.nom }}</p>
+            <p><strong>Prénom:</strong> {{ selectedApprenant?.prenom }}</p>
+            <p><strong>Email:</strong> {{ selectedApprenant?.email }}</p>
+            <p><strong>Adresse:</strong> {{ selectedApprenant?.adresse }}</p>
+            <p><strong>Téléphone:</strong> {{ selectedApprenant?.telephone }}</p>
+            <p><strong>Photo:</strong> <img [src]="selectedApprenant?.photo" alt="photo de l'apprenant" /></p>
+            <p><strong>Role:</strong> {{ selectedApprenant?.role }}</p>
+        </div>
+    </div>
+
+<!-- Modal d'édition de l'apprenant -->
+<div *ngIf="isEditing" class="edit-modal-overlay" (click)="closeEditModal()">
+    <div class="edit-modal-content" (click)="$event.stopPropagation()">
+        <!-- Bouton de fermeture avec une icône "×" -->
+        <span class="close-modal" (click)="closeEditModal()">&times;</span>
+        <h2>Modifier les informations de l'apprenant</h2>
+        <form (ngSubmit)="onSubmit()" #editForm="ngForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input
+                        type="text"
+                        id="nom"
+                        [(ngModel)]="apprenant.nom"
+                        name="nom"
+                        required
+                        pattern="^[a-zA-Z\s]+$"
+                        #nom="ngModel"
+                        (input)="validateField(nom)"
+                    />
+                    <div *ngIf="nom.invalid && nom.touched" class="error-message">Le nom est requis et doit contenir uniquement des lettres et des espaces.</div>
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input
+                        type="text"
+                        id="prenom"
+                        [(ngModel)]="apprenant.prenom"
+                        name="prenom"
+                        required
+                        pattern="^[a-zA-Z\s]+$"
+                        #prenom="ngModel"
+                        (input)="validateField(prenom)"
+                    />
+                    <div *ngIf="prenom.invalid && prenom.touched" class="error-message">Le prénom est requis et doit contenir uniquement des lettres et des espaces.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        [(ngModel)]="apprenant.email"
+                        name="email"
+                        required
+                        email
+                        #email="ngModel"
+                        (input)="validateField(email)"
+                    />
+                    <div *ngIf="email.invalid && email.touched" class="error-message">L'email est invalide ou requis.</div>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Téléphone</label>
+                    <input
+                        type="text"
+                        id="telephone"
+                        [(ngModel)]="apprenant.telephone"
+                        name="telephone"
+                        required
+                        pattern="^(76|77|78|75)\d{7}$"
+                        #telephone="ngModel"
+                        (input)="validateField(telephone)"
+                    />
+                    <div *ngIf="telephone.invalid && telephone.touched" class="error-message">Le téléphone est requis et doit commencer par 76, 77, 78 ou 75 suivi de 7 chiffres.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="adresse">Adresse</label>
+                    <input
+                        type="text"
+                        id="adresse"
+                        [(ngModel)]="apprenant.adresse"
+                        name="adresse"
+                        required
+                        #adresse="ngModel"
+                        (input)="validateField(adresse)"
+                    />
+                    <div *ngIf="adresse.invalid && adresse.touched" class="error-message">L'adresse est requise.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="adresse">Matricule</label>
+                    <input
+                        type="text"
+                        id="adresse"
+                        [(ngModel)]="apprenant.matricule"
+                        name="matricule"
+                        required
+                        #matricule="ngModel"
+                        (input)="validateField(matricule)"
+                    />
+                    <div *ngIf="matricule.invalid && matricule.touched" class="error-message">Le matricule est requise.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="role">Rôle</label>
+                    <select
+                        id="role"
+                        [(ngModel)]="apprenant.role"
+                        name="role"
+                        required
+                        #role="ngModel"
+                        (change)="validateField(role)"
+                    >
+                        <option value="apprenant">Apprenant</option>
+                    </select>
+                    <div *ngIf="role.invalid && role.touched" class="error-message">Le rôle est requis.</div>
+                </div>
+                <div class="form-group">
+                     <label for="photo">Photo</label>
+                    <input
+                        type="file"
+                        id="photo"
+                        [(ngModel)]="apprenant.photo"
+                        name="photo"
+                        required
+                        #photo="ngModel"
+                        (change)="validateField(photo)"
+                    />
+                    <div *ngIf="photo.invalid && photo.touched" class="error-message">
+                        La photo est requise.
+                    </div>
+              </div>
+            </div>
+            <button type="submit" [disabled]="!editForm.valid">Sauvegarder les modifications</button>
+        </form>
+
+        <!-- Bouton pour fermer le modal -->
+        <button class="close-modal" (click)="closeEditModal()">Fermer</button>
+
+        <!-- Notification -->
+        <div *ngIf="notificationMessage" [ngClass]="notificationClass" class="notification">
+            {{ notificationMessage }}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <!-- Modal de confirmation -->
+    <div *ngIf="showConfirmationModal" class="confirmation-modal">
+        <div class="confirmation-modal-content">
+            <p>{{ confirmationMessage }}</p>
+            <button class="confirm-button" (click)="confirmAction()">Confirmer</button>
+            <button class="cancel-button" (click)="cancelAction()">Annuler</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div *ngIf="notificationMessage" [ngClass]="notificationClass" class="notification">
+        {{ notificationMessage }}
+    </div>
+</div>

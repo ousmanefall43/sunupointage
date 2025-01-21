@@ -1,0 +1,54 @@
+<div class="sidebar">
+  <!-- Section du logo -->
+  <div class="sidebar-logo">
+    <img src="assets/logo.png" alt="Logo Sunu Pointage" class="logo">
+  </div>
+
+
+ 
+  
+  <nav class="sidebar">
+    <ul class="sidebar-menu">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          <i class="fas fa-home"></i> Accueil
+        </a>
+      </li>
+      <li>
+        <a (click)="toggleSubmenu()" class="menu-item">
+          <i class="fas fa-users"></i> Utilisateurs
+          <i class="fas" [ngClass]="{ 'fa-chevron-down': submenuVisible, 'fa-chevron-right': !submenuVisible }"></i>
+        </a>
+        <ul class="submenu" *ngIf="submenuVisible">
+          <li>
+            <a routerLink="/users/employes" routerLinkActive="active" (click)="keepSubmenuOpen()">Employés</a>
+          </li>
+          <li>
+            <a routerLink="/users/apprenants" routerLinkActive="active" (click)="keepSubmenuOpen()">Apprenants</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a routerLink="/structures" routerLinkActive="active">
+          <i class="fas fa-building"></i> Structures
+        </a>
+      </li>
+      <li>
+        <a routerLink="/pointages" routerLinkActive="active">
+          <i class="fas fa-hand-paper"></i> Pointages
+        </a>
+      </li>
+    </ul>
+  </nav>
+  
+
+  
+ 
+  
+
+  <div class="content">
+   
+  </div>
+  
+<!-- Ajout de Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">

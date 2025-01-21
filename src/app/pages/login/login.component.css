@@ -1,0 +1,125 @@
+/* Général */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f9fa; /* Fond général */
+}
+
+/* Carte principale */
+.card {
+  position: relative;
+  width: 940px; /* Largeur fixe */
+  height: 550px; /* Hauteur fixe */
+  background: url('../../../assets/bgs.png') no-repeat center center/cover; /* Image de fond */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  color: white;
+  overflow: hidden; /* Évite les dépassements */
+}
+
+/* Partie gauche : Formulaire */
+.left-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Occupe la moitié gauche de la carte */
+  height: 80%; /* Prend toute la hauteur de la carte */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Aligne le contenu vers le bas */
+  padding: 50px; /* Ajoute un padding */
+  z-index: 1; /* Assure que la partie gauche est au-dessus de l'image */
+  margin-left: 80px; /* Déplacement vers la gauche */
+}
+
+/* Overlay sombre pour lisibilité */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Contenu de la carte */
+.content {
+  width: 100%;
+  text-align: left; /* Aligner le texte à gauche */
+}
+
+/* Formulaire */
+.form-label {
+  font-weight: bold;
+  text-align: left;
+  display: block;
+  margin-left: 5px;
+}
+
+/* Champs de formulaire */
+.form-control {
+  background: transparent;
+  color: white;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0;
+  margin-right: 20px; /* Ajuste la marge à droite */
+  margin-top: 10px;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: white;
+}
+
+/* Icone d'œil pour afficher/mot de passe */
+.eye-icon {
+  cursor: pointer;
+  color: white;
+}
+
+/* Partie droite : Image de fond */
+.right-section {
+  flex: 1; /* Occupe l'autre moitié de la carte */
+}
+
+/* Contenu de la carte */
+.content {
+  width: 100%;
+  text-align: center; /* Centre le texte de tout le contenu */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Titre */
+.welcome-title {
+  margin-top: 90px;
+  font-family: 'Risque', serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center; /* Centre le titre */
+  width: 100%; /* S'assure que le titre occupe toute la largeur disponible */
+}
+
+.eye-icon {
+  cursor: pointer; /* Change le curseur pour indiquer que l'élément est cliquable */
+  font-size: 1.5rem; /* Taille de l'icône */
+  color: white; /* Couleur de l'icône */
+}
+
+/* Bouton de connexion */
+.btn-light {
+  font-size: 1.2rem; /* Augmente la taille de la police */
+  padding: 10px; /* Augmente le padding pour rendre le bouton plus grand */
+  border-radius: 5px; /* Ajuste le rayon des coins si nécessaire */
+}

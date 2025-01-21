@@ -1,0 +1,134 @@
+/* Sidebar globale */
+/* Sidebar globale */
+.sidebar {
+  width: 280px; /* Largeur de la sidebar */
+  height: 100vh; /* Hauteur complète de l'écran */
+  background-color: #137C8B; /* Couleur de fond */
+  color: #ecf0f1; /* Couleur du texte */
+  top: 0; /* Positionner en haut de l'écran */
+  left: 0; /* Positionner à gauche de l'écran */
+  position: fixed; /* Fixe la sidebar sur la page */
+  display: flex; /* Utiliser Flexbox */
+  flex-direction: column; /* Organisation verticale (logo puis menu) */
+  align-items: center; /* Centrer horizontalement les éléments */
+  padding: 0; /* Retirer les marges internes */
+  z-index: 1000; /* Assure que la sidebar est au-dessus du contenu */
+}
+
+
+
+
+
+
+
+/* Section du logo */
+.sidebar-logo {
+  width: 100%; /* Prendre toute la largeur de la sidebar */
+  text-align: center; /* Centrer l'image */
+  z-index: 1100; /* Assure que le logo est au-dessus des autres éléments */
+
+}
+
+
+/* Logo */
+.logo {
+  width: 100%; /* Ajuster la taille selon l'espace disponible */
+  height: auto; /* Préserver les proportions */
+}
+
+/* Menu de la sidebar */
+.sidebar-menu {
+  list-style: none; /* Supprimer les puces */
+  padding: 40px; /* Retirer le padding interne */
+  width: 100%; /* Prendre toute la largeur de la sidebar */
+  margin-top: 230px; /* Espacement au-dessus et en dessous pour descendre le logo */
+
+}
+
+/* Liste des éléments du menu */
+.sidebar-menu li {
+  margin: 15px 0; /* Espacement vertical entre les items */
+  width: 100%; /* Assurez-vous que les éléments occupent toute la largeur */
+}
+
+/* Lien du menu avec icône et texte */
+.sidebar-menu li a {
+  text-decoration: none; /* Supprimer la décoration des liens */
+  color: #ecf0f1; /* Couleur du texte */
+  padding: 5px 10px; /* Espacement interne */
+  display: flex; /* Utiliser flexbox pour aligner l'icône et le texte */
+  align-items: center; /* Centrer l'icône et le texte verticalement */
+  border-radius: 5px; /* Coins arrondis */
+  font-size: 20px; /* Taille du texte */
+  font-weight: bold; /* Texte en gras */
+  transition: background 0.3s; /* Transition fluide au survol */
+}
+
+/* Effet hover et actif */
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+  background-color: #005A8D; /* Couleur de fond au survol et pour l'état actif */
+  width: 170px; /* Ajuster la largeur de l'élément actif */
+}
+
+/* Espacement entre l'icône et le texte */
+.sidebar-menu li a i {
+  margin-right: 10px; /* Espace entre l'icône et le texte */
+  font-size: 20px; /* Taille de l'icône */
+}
+
+/* Styles pour le contenu principal */
+.content {
+  margin-left: 290px;  /* Décale le contenu vers la droite pour qu'il ne soit pas caché sous la sidebar */
+  padding: 20px;
+}
+
+/* Ajout de responsive design pour écrans plus petits */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 250px; /* Réduit la largeur de la sidebar sur petits écrans */
+  }
+
+  .content {
+    margin-left: 280px;  /* Ajoute une marge correspondante */
+  }
+}
+
+
+/* Style pour le sous-menu */
+.submenu {
+  display: none; /* Par défaut, on cache le sous-menu */
+  margin-left: 20px;
+}
+
+.sidebar-menu li:hover .submenu {
+  display: block; /* Afficher le sous-menu lorsqu'on survole le parent */
+}
+
+/* Style des liens du sous-menu */
+.submenu a {
+  font-size: 14px;
+  padding-left: 10px;
+  color: #555;
+}
+
+.submenu a:hover {
+  color: #137C8B; /* Change la couleur au survol */
+}
+
+
+
+ul.submenu {
+  list-style: none; /* Supprime les puces pour les sous-menus */
+  padding-left: 20px; /* Ajoute un peu d'indentation si nécessaire */
+}
+
+a.menu-item {
+  text-decoration: none; /* Enlève les soulignements */
+  cursor: pointer; /* Ajoute une main au survol */
+}
+
+
+.submenu[hidden] {
+  display: none;
+}

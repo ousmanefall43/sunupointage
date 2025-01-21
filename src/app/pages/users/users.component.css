@@ -1,0 +1,125 @@
+.main-content {
+    margin-left: 100px;
+    height: 100vh;
+    padding: 200px;
+    width: 100%;
+  }
+  
+  /* Bouton Ajouter */
+  .button {
+    background-color: #137C8B;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  
+  .button:hover {
+    background-color: #106c76;
+  }
+  
+  .filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    position: relative;
+    margin-right: 20px;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #aaa;
+  }
+  
+  .search-input {
+    padding: 5px 10px 5px 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .filter-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-select-container {
+    margin-right: 10px;
+  }
+  
+  .filter-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .action-button-container {
+    margin-right: auto;
+  }
+  
+  .action-button {
+    padding: 8px 16px;
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .action-button:hover {
+    background-color: #005a4f;
+  }
+  
+  /* Conteneur du tableau */
+  .table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination button {
+    background-color: #137C8B;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  
+  .pagination button:hover {
+    background-color: #106c76;
+  }
+  
