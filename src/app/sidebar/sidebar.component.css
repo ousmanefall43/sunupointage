@@ -1,0 +1,142 @@
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background-color: #137C8B;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ...les autres styles de la sidebar */
+  
+/* Logo */
+.sidebar .logo {
+  width: 100%; /* Prendre toute la largeur de la sidebar */
+  height: 150px; /* Augmenter légèrement la hauteur */
+  background-image: url('../../assets/logo.png');
+  background-size: 90%; /* Augmenter la taille de l'image à 120% */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Menu */
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Permet de remplir l'espace restant pour pousser le bouton de déconnexion en bas */
+}
+
+/* Liens de menu */
+.sidebar nav ul li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Aligner les éléments horizontalement */
+}
+
+/* Icône et texte du menu */
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center; /* Centrer l'icône et le texte verticalement */
+    padding: 20px; /* Augmenter le padding pour agrandir les éléments */
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    width: 100%; /* Occuper toute la largeur du conteneur */
+    font-size: 20px; /* Augmenter légèrement la taille du texte */
+    position: relative; /* Nécessaire pour l'effet hover */
+    overflow: hidden; /* Éviter les débordements */
+
+}
+
+/* Icône */
+.sidebar nav ul li a i {
+    margin-right: 15px; /* Espacement plus grand entre l'icône et le texte */
+    font-size: 24px; /* Augmenter la taille des icônes */
+}
+
+/* Hover avec largeur augmentée */
+.sidebar nav ul li a:hover,
+.sidebar nav ul li.active a {
+    background-color: #05444e;
+    padding: 15px 100px; /* Augmente le padding horizontal sur le hover */
+    margin-left: -5px; /* Donne un effet de largeur supplémentaire */
+    width: calc(100% + 20px); /* Étendre la largeur pour dépasser légèrement */
+    border-radius: 8px; /* Ajuste les coins pour un effet plus large */
+}
+
+/* Déconnexion */
+.sidebar .logout {
+    background-color: #D7263D;
+    color: white;
+    border: none;
+    padding: 15px 50px; /* Augmenter le padding pour l'agrandir */
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s;
+    font-size: 18px; /* Augmenter la taille du texte */
+}
+
+.sidebar .logout:hover {
+    background-color: #B71E30;
+}
+/* Menu déroulant (dropdown) */
+.sidebar nav ul li {
+  position: relative; /* Nécessaire pour positionner le menu déroulant */
+}
+
+.sidebar nav ul li a .dropdown-icon {
+  margin-left: auto; /* Pousse l'icône vers la droite */
+  font-size: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar nav ul li.dropdown-open > a .dropdown-icon {
+  transform: rotate(180deg); /* Faire pivoter l'icône lorsqu'il est ouvert */
+}
+
+/* Liste du menu déroulant */
+.sidebar nav ul li .dropdown-menu {
+  list-style: none;
+  padding: 10px 20px;
+  margin: 0;
+  background-color: #05444e; /* Même couleur que le hover */
+  border-radius: 5px;
+  position: absolute;
+  top: 50px; /* Décale le menu sous l'élément principal */
+  left: 0;
+  z-index: 1000;
+  display: block;
+  width: calc(100% - 40px); /* S'adapte à la largeur de l'élément parent */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar nav ul li .dropdown-menu li {
+  margin-bottom: 10px;
+}
+
+.sidebar nav ul li .dropdown-menu li:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar nav ul li .dropdown-menu a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 5px;
+}
+
+.sidebar nav ul li .dropdown-menu a:hover {
+  background-color: #137C8B; /* Couleur pour le hover */
+}

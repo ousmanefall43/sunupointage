@@ -1,0 +1,27 @@
+[33mce97735b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdiengauth[m[33m)[m HEAD@{0}: checkout: moving from diengauth to diengauth
+[33mce97735b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdiengauth[m[33m)[m HEAD@{1}: checkout: moving from main to diengauth
+[33mc4af00f4[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m HEAD@{2}: rebase (finish): returning to refs/heads/main
+[33mc4af00f4[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m HEAD@{3}: rebase (pick): la recuperation des traveaux de fatou dieye et ousmane et le mien
+[33m9c1d7854[m HEAD@{4}: rebase (continue): Initial commit
+[33m9e5fe9a1[m HEAD@{5}: pull origin main --rebase (start): checkout 9e5fe9a146222cf7b8e36caacc290e46d95e1bf8
+[33m8a5de6b7[m HEAD@{6}: commit: la recuperation des traveaux de fatou dieye et ousmane et le mien
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{7}: checkout: moving from dieng1 to main
+[33mbdbfe381[m[33m ([m[1;31morigin/moustapha[m[33m, [m[1;32mmoustapha[m[33m, [m[1;32mdieng1[m[33m)[m HEAD@{8}: checkout: moving from moustapha to dieng1
+[33mbdbfe381[m[33m ([m[1;31morigin/moustapha[m[33m, [m[1;32mmoustapha[m[33m, [m[1;32mdieng1[m[33m)[m HEAD@{9}: checkout: moving from main to moustapha
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{10}: checkout: moving from moustapha to main
+[33mbdbfe381[m[33m ([m[1;31morigin/moustapha[m[33m, [m[1;32mmoustapha[m[33m, [m[1;32mdieng1[m[33m)[m HEAD@{11}: commit: nouveau comit
+[33mce97735b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdiengauth[m[33m)[m HEAD@{12}: checkout: moving from diengauth to moustapha
+[33mce97735b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdiengauth[m[33m)[m HEAD@{13}: reset: moving to HEAD^
+[33mf610bc0c[m[33m ([m[1;31morigin/diengauth[m[33m)[m HEAD@{14}: checkout: moving from diengauth to diengauth
+[33mf610bc0c[m[33m ([m[1;31morigin/diengauth[m[33m)[m HEAD@{15}: commit: projet en phase test
+[33mce97735b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdiengauth[m[33m)[m HEAD@{16}: commit: j'ai terminer la connexion coté coté back il me reste la connexion par carte sur angular mais le back est deja fait
+[33ma9523c12[m HEAD@{17}: checkout: moving from main to diengauth
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{18}: Branch: renamed refs/heads/master to refs/heads/main
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{20}: checkout: moving from main to master
+[33m9e5fe9a1[m HEAD@{21}: checkout: moving from dieng to main
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{22}: checkout: moving from diengauth to dieng
+[33ma9523c12[m HEAD@{23}: checkout: moving from master to diengauth
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{24}: checkout: moving from diengauth to master
+[33ma9523c12[m HEAD@{25}: commit: nouveau
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{26}: checkout: moving from master to diengauth
+[33md8e9e520[m[33m ([m[1;31morigine/main[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/dieng[m[33m, [m[1;32mdieng[m[33m)[m HEAD@{27}: commit (initial): Initial commit

@@ -1,0 +1,278 @@
+<app-sidebar></app-sidebar>
+<div class="main-content">
+    <div class="filter-section">
+       
+        <div class="import-csv-container">
+            <button (click)="openCSVImportDialog()" class="button">Importer CSV</button>
+        </div>
+  
+      
+        <div class="filter-right">
+          <label for="filter-right">Département: </label>
+            <select [(ngModel)]="selectedDepartement" (change)="onDepartementChange()" class="filter-select">
+                <option *ngFor="let departement of departements" [value]="departement.id">
+                  {{ departement.name }}
+                </option>
+              </select>
+        </div>
+    </div>
+    
+    <div *ngIf="notificationMessage" class="notification" [ngClass]="notificationClass">
+        {{ notificationMessage }}
+      </div>
+      
+    
+      <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Prénom et Nom</th>
+                    <th>Matricule</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Fonction</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Affichage des employés -->
+                <tr *ngFor="let employe of displayedEmployes">
+                  
+
+                    <td>
+                        <div class="name-checkbox-container">
+                            <input
+                              type="checkbox"
+                              [(ngModel)]="employe.selected"
+                              (change)="onEmployeSelect(employe, $event)">
+                            <div *ngIf="employe.photo; else avatar">
+                                <img [src]="employe.photo" alt="Photo" class="employe-photo" />
+                            </div>
+                            <ng-template #avatar>
+                                <div class="avatar">
+                                    <!-- Création de l'avatar avec les initiales -->
+                                    <span>{{ getInitials(employe.prenom, employe.nom) }}</span>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </td>
+                    <td>{{ employe.prenom }} {{ employe.nom }}</td>
+                    <td>{{ employe.matricule }}</td>
+                    <td>{{ employe.email }}</td>
+                    <td>{{ employe.telephone }}</td>
+                    <td>{{ employe.fonction }}</td>
+                    <td [ngClass]="{'true': employe.is_active, 'blocked': !employe.is_active}">
+                        {{ employe.is_active ? 'Actif' : 'Bloqué' }}
+                    </td>
+                    <td class="actions">
+                       <!-- Icône de modification -->
+                        <button (click)="editEmploye(employe)" class="action-button">
+                          <i class="fas fa-edit"></i>
+                        </button>
+
+                        <!-- Icône de blocage/déblocage -->
+                    <button (click)="confirmBlockOrUnblockEmploye(employe)" class="action-button">
+                      <i [class]="employe.is_active ? 'fas fa-user-check' : 'fas fa-user-lock'"></i>
+                    </button>
+
+                        <!-- Icône de suppression -->
+                        <button (click)="deleteEmploye(employe)" class="action-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+    
+                        <!-- Icône de vue -->
+                        <button (click)="viewEmploye(employe)" class="action-button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="button-container">
+        <button
+          *ngIf="selectedEmployes.length > 0"
+          (click)="bulkDelete()"
+          class="button">
+          Supprimer Sélection
+        </button>
+        <button
+          *ngIf="selectedEmployes.length > 0"
+          (click)="bulkBlock()"
+          class="button">
+          Bloquer Sélection
+        </button>
+    </div>
+    
+    <div class="pagination">
+      <button (click)="previousPage()" [disabled]="page === 1">Précédent</button>
+      <span>Page {{ page }} sur {{ Math.ceil(totalEmployes / size) }}</span>
+      <button (click)="nextPage()" [disabled]="page === Math.ceil(totalEmployes / size)">Suivant</button>
+    </div>
+
+         <!-- Modal de détails de l'apprenant -->
+    <div *ngIf="showEmployeModal" class="employe-modal">
+        <div class="employe-modal-content">
+            <span class="close-button" (click)="closeEmployeModal()">&times;</span>
+            <h2>Détails de l'Apprenant</h2>
+            <p><strong>Nom:</strong> {{ selectedEmploye?.nom }}</p>
+            <p><strong>Prénom:</strong> {{ selectedEmploye?.prenom }}</p>
+            <p><strong>Email:</strong> {{ selectedEmploye?.email }}</p>
+            <p><strong>Adresse:</strong> {{ selectedEmploye?.adresse }}</p>
+            <p><strong>Téléphone:</strong> {{ selectedEmploye?.telephone }}</p>
+            <p><strong>Photo:</strong> <img [src]="selectedEmploye?.photo" alt="photo de l'apprenant" /></p>
+            <p><strong>Role:</strong> {{ selectedEmploye?.role }}</p>
+        </div>
+    </div>
+
+
+
+<!-- Modal d'édition de l'employé -->
+<div *ngIf="isEditing" class="edit-modal-overlay" (click)="closeEditModal()">
+  <div class="edit-modal-content" (click)="$event.stopPropagation()">
+    <span class="close-modal" (click)="closeEditModal()">&times;</span>
+    <h2>Modifier les informations de l'employé</h2>
+
+    <form [formGroup]="employeForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input
+            type="text"
+            id="nom"
+            formControlName="nom"
+            required
+          />
+          <div *ngIf="employeForm.get('nom')?.invalid && employeForm.get('nom')?.touched" class="error-message">
+            Le nom est requis et doit contenir uniquement des lettres et des espaces.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prenom">Prénom</label>
+          <input
+            type="text"
+            id="prenom"
+            formControlName="prenom"
+            required
+          />
+          <div *ngIf="employeForm.get('prenom')?.invalid && employeForm.get('prenom')?.touched" class="error-message">
+            Le prénom est requis et doit contenir uniquement des lettres et des espaces.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            required
+          />
+          <div *ngIf="employeForm.get('email')?.invalid && employeForm.get('email')?.touched" class="error-message">
+            L'email est requis et doit être valide.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="telephone">Téléphone</label>
+          <input
+            type="text"
+            id="telephone"
+            formControlName="telephone"
+            required
+          />
+          <div *ngIf="employeForm.get('telephone')?.invalid && employeForm.get('telephone')?.touched" class="error-message">
+            Le téléphone est requis et doit commencer par 77, 78, 75 ou 76 suivi de 7 chiffres.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <input
+            type="text"
+            id="adresse"
+            formControlName="adresse"
+            required
+          />
+          <div *ngIf="employeForm.get('adresse')?.invalid && employeForm.get('adresse')?.touched" class="error-message">
+            L'adresse est requise.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Rôle</label>
+          <select
+            id="role"
+            formControlName="role"
+            required
+          >
+            <option value="vigile">Employé</option>
+          </select>
+          <span *ngIf="employeForm.get('role')?.invalid && employeForm.get('role')?.touched" class="error-message">
+            Le rôle est requis.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fonction">Fonction</label>
+          <input
+            type="text"
+            id="fonction"
+            formControlName="fonction"
+            required
+          />
+          <div *ngIf="employeForm.get('fonction')?.invalid && employeForm.get('fonction')?.touched" class="error-message">
+            Le fonction est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input
+            type="file"
+            id="photo"
+            formControlName="photo"
+            required
+          />
+          <div *ngIf="employeForm.get('photo')?.invalid && employeForm.get('photo')?.touched" class="error-message">
+            La photo est requise.
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!employeForm.valid">Sauvegarder les modifications</button>
+    </form>
+  </div>
+</div>
+
+   
+
+    
+    <!-- Modal de confirmation -->
+    <div *ngIf="showConfirmationModal" class="confirmation-modal">
+        <div class="confirmation-modal-content">
+            <p>{{ confirmationMessage }}</p>
+            <button class="confirm-button"(click)="confirmAction()">Confirmer</button>
+            <button  class="cancel-button"(click)="cancelAction()">Annuler</button>
+        </div>
+    </div>
+    
+   
+
+    <!-- Notification -->
+    <div *ngIf="notificationMessage" [ngClass]="notificationClass" class="notification">
+        {{ notificationMessage }}
+    </div>
+    
+    
+    

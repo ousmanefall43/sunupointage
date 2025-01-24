@@ -1,0 +1,256 @@
+/* Conteneur principal */
+.main-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f9f9f9;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    background-color: #004d64;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .logo {
+    text-align: center;
+  }
+  
+  .logo img {
+    max-width: 100%;
+    height: 60px;
+  }
+  
+  .logo h3 {
+    margin: 10px 0 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .menu {
+    margin-top: 30px;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-item span {
+    margin-right: 10px;
+  }
+  
+  .menu-item.active,
+  .menu-item:hover {
+    background-color: #006f8c;
+  }
+  
+  .logout-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #ff3333;
+  }
+  
+  /* Contenu principal */
+  .content {
+    flex: 1;
+    padding: 20px;
+    margin-left: 300px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  /* Pointages */
+  .pointages-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pointages-container h2 {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .pointages-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pointages-table th,
+  .pointages-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .pointages-table thead {
+    background-color: #f3f4f6;
+  }
+  
+  .pointages-table .status-arrive {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-align: center;
+  }
+  
+  .pointages-table .status-retard {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-align: center;
+  }
+  
+  .action-icons {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .action-icons:hover {
+    color: #0056b3;
+  }
+  /* Sidebar */
+.menu-item i {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  .logout-btn i {
+    margin-right: 10px;
+  }
+  
+  /* Table Actions */
+  .action-icon {
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .action-icon:hover {
+    color: #0056b3;
+  }
+  .status-arrive {
+    color: green; /* Vert pour 'Présent' */
+  }
+  
+  .status-retard {
+    color: orange; /* Orange pour 'Retard' */
+  }
+  
+  .status-absent {
+    color: red; /* Rouge pour 'Absent' */
+  }
+  .modal {
+/*     position: fixed;
+ */    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn-save {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-close {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .success-modal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+  }
+  
+  .success-modal .btn {
+    margin-top: 10px;
+  }
+  

@@ -1,0 +1,164 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar> <!-- Utilisation du composant Sidebar -->
+  
+  <main class="main-content">
+    <header class="header">
+      <div class="search-filter">
+        <div class="input-group">
+          <input type="text" placeholder="Rechercher..." class="form-control" />
+          <div class="dropdown">
+            <button 
+              class="btn dropdown-toggle" 
+              style="background-color: #137C8B; color: white;" 
+              type="button" 
+              id="filterDropdown" 
+              data-bs-toggle="dropdown" 
+              aria-expanded="false">
+              Filtre
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+              <li><a class="dropdown-item" href="#">Cohortes</a></li>
+              <li><a class="dropdown-item" href="#">Départements</a></li>
+            </ul>
+          </div> 
+        </div>
+      </div>
+      <div class="profile">
+        <span>Groupe 2</span>
+        <img src="/assets/profile.jpg" alt="Profil" />
+      </div>
+    </header>
+    <section class="stats">
+      <div class="card">
+        <i class="bi bi-people" style="font-size: 4rem;"></i>
+        <a class="one" href="/employes">Employés</a>
+      </div>
+      <div class="card">
+        <i class="bi bi-book" style="font-size: 4rem;"></i>
+        <a class="one" href="/apprenants">Apprenants</a>
+      </div>
+      <div class="card">
+        <i class="bi bi-credit-card" style="font-size: 4rem;"></i>
+        <a class="one" href="/card-management">Gestion Carte</a>
+      </div>
+    </section>
+    <div class="input-group mb-3">
+      <button
+        class="btn"
+        style="background-color: #137C8B; color: white;"
+        type="button"
+        (click)="openRegistrationModal()">
+        Ajouter
+      </button>
+    </div>
+    
+    <!-- Modal d'inscription -->
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registrationModalLabel">Inscription</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="registrationForm" #registrationForm="ngForm" (ngSubmit)="submitRegistrationForm()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="nom" class="form-label">Nom</label>
+                  <input type="text" class="form-control" id="nom" name="nom" required minlength="2" maxlength="255" ngModel #nom="ngModel" />
+                  <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class="text-danger">
+                    <div *ngIf="nom.errors?.['required']">Le nom est requis.</div>
+                    <div *ngIf="nom.errors?.['minlength']">Le nom doit avoir au moins 2 caractères.</div>
+                    <div *ngIf="nom.errors?.['maxlength']">Le nom ne peut pas dépasser 255 caractères.</div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="prenom" class="form-label">Prénom</label>
+                  <input type="text" class="form-control" id="prenom" name="prenom" required minlength="2" maxlength="255" ngModel #prenom="ngModel" />
+                  <div *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)" class="text-danger">
+                    <div *ngIf="prenom.errors?.['required']">Le prénom est requis.</div>
+                    <div *ngIf="prenom.errors?.['minlength']">Le prénom doit avoir au moins 2 caractères.</div>
+                    <div *ngIf="prenom.errors?.['maxlength']">Le prénom ne peut pas dépasser 255 caractères.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required email ngModel #email="ngModel" />
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                    <div *ngIf="email.errors?.['required']">L'email est requis.</div>
+                    <div *ngIf="email.errors?.['email']">L'email n'est pas valide.</div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="telephone" class="form-label">Téléphone</label>
+                  <input type="text" class="form-control" id="telephone" name="telephone" required minlength="9" maxlength="20" ngModel #telephone="ngModel" />
+                  <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="text-danger">
+                    <div *ngIf="telephone.errors?.['required']">Le téléphone est requis.</div>
+                    <div *ngIf="telephone.errors?.['minlength']">Le téléphone doit avoir au moins 9 caractères.</div>
+                    <div *ngIf="telephone.errors?.['maxlength']">Le téléphone ne peut pas dépasser 20 caractères.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="adresse" class="form-label">Adresse</label>
+                  <input type="text" class="form-control" id="adresse" name="adresse" ngModel />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="photo" class="form-label">Photo</label>
+                  <input type="file" class="form-control" id="photo" name="photo" accept=".jpg, .jpeg, .png, .gif" ngModel />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="role" class="form-label">Rôle</label>
+                  <select class="form-control" id="role" name="role" required ngModel #role="ngModel" (change)="updateSpecificFields($event)">
+                    <option value="employe">Employé</option>
+                    <option value="apprenant">Apprenant</option>
+                  </select>
+                  <div *ngIf="role.invalid && (role.dirty || role.touched)" class="text-danger">
+                    <div *ngIf="role.errors?.['required']">Le rôle est requis.</div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3" id="specificFields"></div>
+              </div>
+              <button type="submit" class="btn btn-primary" [disabled]="registrationForm.invalid">Enregistrer</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal de succès -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Succès</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            L'utilisateur a été créé avec succès !
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+          <!-- Contenu du modal -->
+    
+    <section class="chart">
+      <input type="date" id="dateFilter" class="form-control" />
+      <h3>Historique de Pointage</h3>
+      <canvas id="chart"></canvas>
+    </section>
+  </main>
+</div>

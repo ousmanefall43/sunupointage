@@ -1,0 +1,47 @@
+.card-management-container {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    background-color: #f5f5f5; /* Optionnel : ajoute une couleur de fond douce */
+  }
+  
+  .card {
+    width: 90%; /* Augmente la largeur de la carte (80% de la largeur de l'écran) */
+    max-width: 1400px; /* Limite la largeur maximale */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+    border-radius: 8px; /* Ajoute des coins arrondis */
+    background-color: #fff; /* Couleur de fond blanche */
+    margin-left: 200px;
+  }
+  
+  
+  .card-header {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #137c8b;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-footer {
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+  

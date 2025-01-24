@@ -1,0 +1,38 @@
+<aside class="sidebar">
+  <div class="logo"></div>
+  <nav>
+    <ul>
+      <li>
+        <a href="/admin-dashboard">
+          <i class="fas fa-home"></i> Accueil
+        </a>
+      </li>
+      <li>
+        <a (click)="toggleUsersDropdown()" [class.dropdown-open]="isUsersDropdownOpen">
+          <i class="fas fa-users"></i> Utilisateurs
+          <span>
+            <i class="fas fa-chevron-down"></i>
+          </span>
+        </a>
+        <!-- Vérifiez que *ngIf fonctionne ici -->
+        <ul class="dropdown-menu" *ngIf="isUsersDropdownOpen">
+          <li><a href="/employes">Département</a></li>
+          <li><a href="/apprenants">Cohorte</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/structures">
+          <i class="fas fa-building"></i> Structure
+        </a>
+      </li>
+      <li>
+        <a href="/pointages">
+          <i class="fas fa-clock"></i> Pointages
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <button class="logout" (click)="logout()">
+    <i class="fas fa-sign-out-alt"></i> Déconnexion
+  </button>
+</aside>

@@ -1,0 +1,180 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  margin-left: 400px;
+  margin-top: 100px;
+  width: 1600px;
+/*   position: relative;
+ */}
+
+.sidebar {
+  width: 15%;
+  height: 108vh; /* Prendre toute la hauteur */
+  background-color: #006d77;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 1rem 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.logout {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 85%; /* Diminuer un peu la largeur du bouton */
+}
+
+.main-content {
+  width: 80%;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.search-filter input {
+ /* padding: 0.75rem; /* Augmenter le rembourrage pour un meilleur confort */
+  /*margin-right: 1rem; /* Augmenter l'espacement à droite */
+  border-bottom: 3px solid #006d77; /* Ajouter une bordure pour le style */
+  border-radius: 5px; /* Arrondir les coins */
+  font-size: 1rem; /* Ajuster la taille de la police */
+  transition: border-color 0.3s; /* Ajouter une transition pour l'effet au survol */
+}
+
+.search-filter input:focus {
+  border-color: #e63946; /* Changer la couleur de la bordure au focus */
+  outline: none; /* Supprimer le contour par défaut */
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: #ffffff;
+  color: #137C8B;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-bottom: 3px solid  #006d77;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 200px;
+  box-shadow: 0 4px 8px rgba(2, 83, 95, 0.2); /* Ombre ajoutée */
+  text-decoration: none;
+  transition: transform 0.3s; /* Ajout de la transition pour l'effet de dilatation */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Dilatation au survol */
+}
+.one {
+  text-decoration: none;
+  background-color: #006d77;
+  color: #ffffff;
+  width: 120px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.25em;
+}
+
+.chart {
+  text-align: center;
+  width: 50%;
+  position: relative;
+  left: 50%;
+  box-shadow: 0 4px 8px rgba(3, 85, 93, 0.2); /* Ajout d'ombre */
+  border-bottom: 3px solid #006d77; /* Ajout d'une bordure en bas */
+}
+
+.modal-header {
+  background-color: #137C8B;
+  color: white;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-footer {
+  justify-content: space-between;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.form-control:focus {
+  border-color: #137C8B;
+  box-shadow: 0 0 0 0.2rem rgba(19, 124, 139, 0.25);
+}
+
+.btn-primary {
+  background-color: #137C8B;
+  border-color: #137C8B;
+}
+
+.btn-primary:hover {
+  background-color: #106a75;
+  border-color: #137C8B;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+}
+.modal {
+  pointer-events: none; /* Cela empêcherait toute interaction */
+}
+.modal-backdrop {
+  z-index: -1; /* Cela rendrait le backdrop inutile */
+}

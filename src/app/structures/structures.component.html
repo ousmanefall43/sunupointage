@@ -1,0 +1,1197 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+
+  
+  
+    
+
+    <div class="filter-section">
+      <div class="action-button-container">
+        <!-- Affichage du bouton Ajouter un Département si on est sur la page des départements -->
+        <button *ngIf="currentPage === 'departement'" (click)="showForm('departement')" class="button">
+          Ajouter un Département
+        </button>
+      
+        <!-- Affichage du bouton Ajouter une Cohorte si on est sur la page des cohortes -->
+        <button *ngIf="currentPage === 'cohorte'" (click)="showForm('cohorte')" class="button">
+          Ajouter une Cohorte
+        </button>
+    </div>
+    
+      
+      
+      
+        <div class="filter-right">
+          <!-- Barre de recherche avec icône -->
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i> <!-- Icône de loupe de FontAwesome -->
+            <input type="text" [(ngModel)]="searchQuery" (input)="filterData()" placeholder="Rechercher..." class="search-input">
+          </div>
+          
+      
+          <!-- Afficher le texte du filtre sélectionné -->
+          <div class="filter-info">
+            <label for="filter-select">Filtre: </label>
+            <select id="filter-select" [(ngModel)]="currentPage" (change)="filterType = currentPage; loadData()" class="filter-select">
+              <option value="departement">Départements</option>
+              <option value="cohorte">Cohortes</option>
+            </select>
+            
+          </div>
+          
+        </div>
+      </div>
+
+
+
+      
+    
+  
+    <div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Nombre de Personne</th>
+        <th>Responsable</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Affichez les départements ou les cohortes en fonction du filtre sélectionné -->
+      <tr *ngFor="let item of filteredData">
+        <td>
+          <!-- Conteneur pour la case à cocher et le nom -->
+          <div class="name-checkbox-container">
+            <input type="checkbox" [(ngModel)]="item.selected" (change)="updateSelectedItems()">
+            <span>{{ item.name || item.nom }}</span>
+          </div>
+        </td>
+        <!-- Nombre d'employés ou personnes -->
+        <td>{{ item.nombre_personne || item.nombre_personnes }}</td> <!-- Vérifier si c'est un département ou une cohorte -->
+        <!-- Responsable -->
+        <td>{{ item.responsable_departement || item.responsable_cohorte }}</td> <!-- Vérifier si c'est un département ou une cohorte -->
+        <td class="actions">
+                <!-- Icône modifier -->
+        
+                <button *ngIf="currentPage === 'departement'" (click)="editItem('departement', item)" class="action-button">
+                  <i class="fas fa-edit"></i>
+                </button>
+
+                <button *ngIf="currentPage === 'cohorte'" (click)="editItem('cohorte', item)" class="action-button">
+                  <i class="fas fa-edit"></i>
+                </button>
+
+            
+            <!-- Icône supprimer -->
+        
+            <button (click)="confirmDelete(item)" class="action-button">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+  
+            <!-- Modal de confirmation -->
+            <div *ngIf="showConfirmationModal" class="confirmation-modal">
+              <div class="confirmation-modal-content">
+                <!-- Message de confirmation avec le nom dynamique de l'élément -->
+                <p>Êtes-vous sûr de vouloir supprimer {{ itemName }} ?</p>
+                <div class="modal-buttons">
+                  <button (click)="cancelDelete()" class="cancel-button">Annuler</button>
+  
+                  <button (click)="deleteItem()" class="confirm-button">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          
+          <!-- Bouton pour afficher le formulaire d'ajout d'un employé -->
+            <!-- Bouton pour afficher le formulaire d'ajout d'un employé -->
+  <!-- Bouton pour ajouter un Employé -->
+  <button *ngIf="filterType === 'departement'" (click)="selectDepartement(item.id)">
+    <i class="fas fa-plus"></i>
+  </button>
+
+  <!-- Bouton pour ajouter un Apprenant -->
+  <button *ngIf="filterType === 'cohorte'" (click)="selectCohorte(item.id)">
+    <i class="fas fa-plus"></i>
+  </button>
+
+
+          </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Pagination -->
+      <div class="pagination">
+        <button (click)="prevPage()" class="pagination-button">Précédent</button>
+        <span>Page {{ currentPages }}</span>
+        <button (click)="nextPage()" class="pagination-button">Suivant</button>
+      </div>
+
+            <!-- Notification Toast -->
+        <div id="notification" class="notification" [ngClass]="notificationClass">
+          {{ notificationMessage }}
+        </div>
+
+<!-- Bouton Supprimer les éléments sélectionnés -->
+<button (click)="confirmDeleteSelected()" *ngIf="selectedItems.length > 0" class="delete-button">
+  <i class="fas fa-trash-alt"></i> Supprimer Sélectionnés
+</button>
+
+<!-- Modal de confirmation pour la suppression en masse -->
+<div *ngIf="showConfirmationModals" class="confirmation-modal">
+  <div class="confirmation-modal-content">
+    <p>Êtes-vous sûr de vouloir supprimer {{ selectedItems.length }} 
+      {{ filterType === 'departement' ? 'départements' : 'cohortes' }} ?</p>
+
+    <ul>
+      <li *ngFor="let item of selectedItems">
+        {{ filterType === 'departement' ? item.name : item.nom }}
+      </li>
+    </ul>
+
+    <div class="modal-buttons">
+      <button (click)="deleteSelected()" class="confirm-button">Supprimer</button>
+      <button (click)="cancelDeletes()" class="cancel-button">Annuler</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Formulaire d'ajout de Département -->
+<div
+  class="modal"
+  tabindex="-1"
+  [ngClass]="{'show': currentForm === 'departement'}"
+  style="display: block;"
+  *ngIf="currentForm === 'departement'"
+  aria-labelledby="departementModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="departementModalTitle">Ajouter un Département</h5>
+        <button type="button" class="close" aria-label="Fermer" (click)="closeDepartementForm()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form (ngSubmit)="addItem()" #departementForm="ngForm">
+          <!-- Nom du Département -->
+          <div class="form-group mb-3">
+            <label for="name" class="form-label">Nom du Département <span class="required">*</span></label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              name="name"
+              [(ngModel)]="newDepartement.name"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              #name="ngModel"
+              placeholder="Entrez le nom du département"
+              (ngModelChange)="nameValid = name.valid ?? false"
+            />
+            <div *ngIf="!nameValid && (name.dirty || name.touched)" class="text-danger mt-1">
+              <small *ngIf="name?.errors?.['required']">Le nom du département est obligatoire.</small>
+              <small *ngIf="name?.errors?.['pattern']">Le nom doit contenir uniquement des lettres, chiffres et espaces.</small>
+            </div>
+
+            <div *ngIf="isSubmitted && errorMessage && errorMessage.includes('nom')" class="text-danger mt-1">
+              <small>{{ errorMessage }}</small>
+            </div>
+          </div>
+
+          <!-- Responsable -->
+          <div class="form-group mb-3">
+            <label for="responsable_departement" class="form-label">Responsable <span class="required">*</span></label>
+            <input
+              type="text"
+              id="responsable_departement"
+              class="form-control"
+              name="responsable_departement"
+              [(ngModel)]="newDepartement.responsable_departement"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              #responsable="ngModel"
+              placeholder="Entrez le nom du responsable"
+              (ngModelChange)="responsableValid = responsable.valid ?? false"
+            />
+            <div *ngIf="!responsableValid && (responsable.dirty || responsable.touched)" class="text-danger mt-1">
+              <small *ngIf="responsable?.errors?.['required']">Le responsable est obligatoire.</small>
+              <small *ngIf="responsable?.errors?.['pattern']">Le responsable doit contenir uniquement des lettres.</small>
+            </div>
+          </div>
+
+          <!-- Nombre de Personnes -->
+          <div class="form-group mb-3">
+            <label for="nombre_personne" class="form-label">Nombre de Personnes <span class="required">*</span></label>
+            <input
+              type="number"
+              id="nombre_personne"
+              class="form-control"
+              name="nombre_personne"
+              [(ngModel)]="newDepartement.nombre_personne"
+              required
+              min="1"
+              #nombrePersonne="ngModel"
+              placeholder="Entrez le nombre de personnes"
+              (ngModelChange)="nombrePersonneValid = nombrePersonne.valid ?? false"
+            />
+            <div *ngIf="!nombrePersonneValid && (nombrePersonne.dirty || nombrePersonne.touched)" class="text-danger mt-1">
+              <small *ngIf="nombrePersonne?.errors?.['required']">Le nombre de personnes est obligatoire.</small>
+              <small *ngIf="nombrePersonne?.errors?.['min']">Le nombre de personnes doit être supérieur ou égal à 1.</small>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group mb-3">
+            <label for="description" class="form-label">Description <span class="required">*</span></label>
+            <textarea
+              id="description"
+              class="form-control"
+              name="description"
+              [(ngModel)]="newDepartement.description"
+              required
+              #description="ngModel"
+              placeholder="Décrivez le département"
+              (ngModelChange)="descriptionValid = description.valid ?? false"
+            ></textarea>
+            <div *ngIf="!descriptionValid && (description.dirty || description.touched)" class="text-danger mt-1">
+              <small *ngIf="description?.errors?.['required']">La description est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Année -->
+          <div class="form-group mb-3">
+            <label for="annee" class="form-label">Année <span class="required">*</span></label>
+            <input
+              type="number"
+              id="annee"
+              class="form-control"
+              name="annee"
+              [(ngModel)]="newDepartement.annee"
+              required
+              min="2000"
+              max="2100"
+              #annee="ngModel"
+              placeholder="Entrez l'année"
+              (ngModelChange)="anneeValid = annee.valid ?? false"
+            />
+            <div *ngIf="!anneeValid && (annee.dirty || annee.touched)" class="text-danger mt-1">
+              <small *ngIf="annee?.errors?.['required']">L'année est obligatoire.</small>
+              <small *ngIf="annee?.errors?.['min'] || annee?.errors?.['max']">L'année doit être comprise entre 2000 et 2100.</small>
+            </div>
+          </div>
+
+          <!-- Heure d'entrée -->
+          <div class="form-group mb-3">
+            <label for="heure_entree" class="form-label">Heure d'entrée <span class="required">*</span></label>
+            <input
+              type="time"
+              id="heure_entree"
+              class="form-control"
+              name="heure_entree"
+              [(ngModel)]="newDepartement.heure_entree"
+              required
+              #heureEntree="ngModel"
+              (ngModelChange)="heureEntreeValid = heureEntree.valid ?? false"
+            />
+            <div *ngIf="!heureEntreeValid && (heureEntree.dirty || heureEntree.touched)" class="text-danger mt-1">
+              <small>L'heure d'entrée est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Heure de sortie -->
+          <div class="form-group mb-3">
+            <label for="heure_sortie" class="form-label">Heure de sortie <span class="required">*</span></label>
+            <input
+              type="time"
+              id="heure_sortie"
+              class="form-control"
+              name="heure_sortie"
+              [(ngModel)]="newDepartement.heure_sortie"
+              required
+              #heureSortie="ngModel"
+              (ngModelChange)="heureSortieValid = heureSortie.valid ?? false"
+            />
+            <div *ngIf="!heureSortieValid && (heureSortie.dirty || heureSortie.touched)" class="text-danger mt-1">
+              <small>L'heure de sortie est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Bouton Ajouter -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="departementForm.invalid"
+          >
+            Ajouter Département
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+    </div>
+
+
+
+<!-- Modal de Cohorte -->
+<div class="modal" tabindex="-1" [ngClass]="{'show': currentForm === 'cohorte'}" style="display: block;" *ngIf="currentForm === 'cohorte'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter une Cohorte</h5>
+        <button type="button" class="close" (click)="closeCohorteForm()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        
+      
+        <form (ngSubmit)="addItem()" #cohorteForm="ngForm">
+          <!-- Nom de la Cohorte -->
+          <div class="form-group mb-3">
+            <label for="nom" class="form-label">Nom de la Cohorte <span class="required">*</span></label>
+            <input
+              type="text"
+              id="nom"
+              class="form-control"
+              name="nom"
+              [(ngModel)]="newCohorte.nom"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              #nom="ngModel"
+              placeholder="Entrez le nom de la cohorte"
+              (ngModelChange)="nomValid = nom.valid ?? false"
+            />
+            
+            <!-- Erreurs de validation du nom -->
+            <div *ngIf="!nomValid && (nom.dirty || nom.touched)" class="text-danger mt-1">
+              <small *ngIf="nom?.errors?.['required']">Le nom de la cohorte est obligatoire.</small>
+              <small *ngIf="nom?.errors?.['pattern']">Le nom doit contenir uniquement des lettres, chiffres et espaces.</small>
+            </div>
+          
+            <!-- Erreur du serveur si le nom existe déjà -->
+            <div *ngIf="isSubmitted && errorMessage && errorMessage.includes('nom')" class="text-danger mt-1">
+              <small>{{ errorMessage }}</small>
+            </div>
+          </div>
+          
+
+          <!-- Responsable -->
+          <div class="form-group mb-3">
+            <label for="responsable_cohorte" class="form-label">Responsable <span class="required">*</span></label>
+            <input
+              type="text"
+              id="responsable_cohorte"
+              class="form-control"
+              name="responsable_cohorte"
+              [(ngModel)]="newCohorte.responsable_cohorte"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              #responsable="ngModel"
+              placeholder="Entrez le nom du responsable"
+              (ngModelChange)="responsableValid = responsable.valid ?? false"
+            />
+            <div *ngIf="!responsableValid && (responsable.dirty || responsable.touched)" class="text-danger mt-1">
+              <small *ngIf="responsable?.errors?.['required']">Le responsable est obligatoire.</small>
+              <small *ngIf="responsable?.errors?.['pattern']">Le responsable doit contenir uniquement des lettres.</small>
+            </div>
+          </div>
+
+          <!-- Nombre de Personnes -->
+          <div class="form-group mb-3">
+            <label for="nombre_personnes" class="form-label">Nombre de Personnes <span class="required">*</span></label>
+            <input
+              type="number"
+              id="nombre_personnes"
+              class="form-control"
+              name="nombre_personnes"
+              [(ngModel)]="newCohorte.nombre_personnes"
+              required
+              min="1"
+              #nombrePersonnes="ngModel"
+              placeholder="Entrez le nombre de personnes"
+              (ngModelChange)="nombrePersonnesValid = nombrePersonnes.valid ?? false"
+            />
+            <div *ngIf="!nombrePersonnesValid && (nombrePersonnes.dirty || nombrePersonnes.touched)" class="text-danger mt-1">
+              <small *ngIf="nombrePersonnes?.errors?.['required']">Le nombre de personnes est obligatoire.</small>
+              <small *ngIf="nombrePersonnes?.errors?.['min']">Le nombre de personnes doit être supérieur ou égal à 1.</small>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group mb-3">
+            <label for="description" class="form-label">Description <span class="required">*</span></label>
+            <textarea
+              id="description"
+              class="form-control"
+              name="description"
+              [(ngModel)]="newCohorte.description"
+              required
+              #description="ngModel"
+              placeholder="Décrivez la cohorte"
+              (ngModelChange)="descriptionValid = description.valid ?? false"
+            ></textarea>
+            <div *ngIf="!descriptionValid && (description.dirty || description.touched)" class="text-danger mt-1">
+              <small *ngIf="description?.errors?.['required']">La description est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Date de début -->
+          <div class="form-group mb-3">
+            <label for="date_debut" class="form-label">Date de début <span class="required">*</span></label>
+            <input
+              type="date"
+              id="date_debut"
+              class="form-control"
+              name="date_debut"
+              [(ngModel)]="newCohorte.date_debut"
+              required
+              #dateDebut="ngModel"
+              (ngModelChange)="dateDebutValid = dateDebut.valid ?? false"
+            />
+            <div *ngIf="!dateDebutValid && (dateDebut.dirty || dateDebut.touched)" class="text-danger mt-1">
+              <small>L'année de début est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Date de fin -->
+          <div class="form-group mb-3">
+            <label for="date_fin" class="form-label">Date de fin <span class="required">*</span></label>
+            <input
+              type="date"
+              id="date_fin"
+              class="form-control"
+              name="date_fin"
+              [(ngModel)]="newCohorte.date_fin"
+              required
+              #dateFin="ngModel"
+              (ngModelChange)="dateFinValid = dateFin.valid ?? false"
+            />
+            <div *ngIf="!dateFinValid && (dateFin.dirty || dateFin.touched)" class="text-danger mt-1">
+              <small>La date de fin est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Heure d'entrée -->
+          <div class="form-group mb-3">
+            <label for="heure_entree" class="form-label">Heure d'entrée <span class="required">*</span></label>
+            <input
+              type="time"
+              id="heure_entree"
+              class="form-control"
+              name="heure_entree"
+              [(ngModel)]="newCohorte.heure_entree"
+              required
+              #heureEntree="ngModel"
+              (ngModelChange)="heureEntreeValid = heureEntree.valid ?? false"
+            />
+            <div *ngIf="!heureEntreeValid && (heureEntree.dirty || heureEntree.touched)" class="text-danger mt-1">
+              <small>L'heure d'entrée est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Heure de sortie -->
+          <div class="form-group mb-3">
+            <label for="heure_sortie" class="form-label">Heure de sortie <span class="required">*</span></label>
+            <input
+              type="time"
+              id="heure_sortie"
+              class="form-control"
+              name="heure_sortie"
+              [(ngModel)]="newCohorte.heure_sortie"
+              required
+              #heureSortie="ngModel"
+              (ngModelChange)="heureSortieValid = heureSortie.valid ?? false"
+            />
+            <div *ngIf="!heureSortieValid && (heureSortie.dirty || heureSortie.touched)" class="text-danger mt-1">
+              <small>L'heure de sortie est obligatoire.</small>
+            </div>
+          </div>
+
+          <!-- Bouton Ajouter -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="cohorteForm.invalid"
+          >
+            Ajouter Cohorte
+          </button>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+  
+
+
+<!-- Modal de Modification de Département -->
+
+
+<!-- Modal de Modification de Département -->
+<div *ngIf="currentEditForm === 'departement'" class="modal show d-block" tabindex="-1" style="background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier le département</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeDepartementEditForm()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateDepartement()" #departementForm="ngForm">
+          <!-- Nom du Département -->
+          <div class="form-group mb-3">
+            <label for="name">Nom du Département</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="currentDepartement.name"
+              name="name"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['name'].touched && !departementForm.controls['name'].valid}"
+              placeholder="Entrez le nom du département">
+            <small class="text-danger" *ngIf="departementForm.controls['name']?.touched && !departementForm.controls['name']?.valid">
+              Le nom du département est requis et ne peut contenir que des lettres, chiffres et espaces.
+            </small>
+          </div>
+
+          <!-- Responsable du département -->
+          <div class="form-group mb-3">
+            <label for="responsable_departement">Responsable</label>
+            <input
+              type="text"
+              id="responsable_departement"
+              [(ngModel)]="currentDepartement.responsable_departement"
+              name="responsable_departement"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['responsable_departement'].touched && !departementForm.controls['responsable_departement'].valid}"
+              placeholder="Entrez le nom du responsable">
+            <small class="text-danger" *ngIf="departementForm.controls['responsable_departement']?.touched && !departementForm.controls['responsable_departement']?.valid">
+              Le nom du responsable est requis et ne peut contenir que des lettres et espaces.
+            </small>
+          </div>
+
+          <!-- Nombre de personnes -->
+          <div class="form-group mb-3">
+            <label for="nombre_personne">Nombre de Personnes</label>
+            <input
+              type="number"
+              id="nombre_personne"
+              [(ngModel)]="currentDepartement.nombre_personne"
+              name="nombre_personne"
+              required
+              min="1"
+              max="100"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['nombre_personne'].touched && !departementForm.controls['nombre_personne'].valid}">
+            <small class="text-danger" *ngIf="departementForm.controls['nombre_personne']?.touched && !departementForm.controls['nombre_personne']?.valid">
+              Veuillez entrer le nombre de personnes.
+            </small>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              [(ngModel)]="currentDepartement.description"
+              name="description"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['description'].touched && !departementForm.controls['description'].valid}">
+            </textarea>
+            <small class="text-danger" *ngIf="departementForm.controls['description']?.touched && !departementForm.controls['description']?.valid">
+              La description est obligatoire.
+            </small>
+          </div>
+
+          <!-- Année -->
+          <div class="form-group mb-3">
+            <label for="annee">Année</label>
+            <input
+              type="number"
+              id="annee"
+              [(ngModel)]="currentDepartement.annee"
+              name="annee"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['annee'].touched && !departementForm.controls['annee'].valid}">
+            <small class="text-danger" *ngIf="departementForm.controls['annee']?.touched && !departementForm.controls['annee']?.valid">
+              L'année est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure d'entrée -->
+          <div class="form-group mb-3">
+            <label for="heure_entree">Heure d'entrée</label>
+            <input
+              type="time"
+              id="heure_entree"
+              [(ngModel)]="currentDepartement.heure_entree"
+              name="heure_entree"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['heure_entree'].touched && !departementForm.controls['heure_entree'].valid}">
+            <small class="text-danger" *ngIf="departementForm.controls['heure_entree']?.touched && !departementForm.controls['heure_entree']?.valid">
+              L'heure d'entrée est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure de sortie -->
+          <div class="form-group mb-3">
+            <label for="heure_sortie">Heure de sortie</label>
+            <input
+              type="time"
+              id="heure_sortie"
+              [(ngModel)]="currentDepartement.heure_sortie"
+              name="heure_sortie"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['heure_sortie'].touched && !departementForm.controls['heure_sortie'].valid}">
+            <small class="text-danger" *ngIf="departementForm.controls['heure_sortie']?.touched && !departementForm.controls['heure_sortie']?.valid">
+              L'heure de sortie est obligatoire.
+            </small>
+          </div>
+
+          <!-- Bouton pour afficher les employés associés -->
+          <button type="button" class="btn btn-info" (click)="getEmployes(currentDepartement.id)">Employés Associés</button>
+
+          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+        </form>
+
+        <!-- Liste des employés associés -->
+        <div class="modal-body">
+          <ul class="list-group">
+            <li *ngFor="let employe of employesAssocies" class="list-group-item">
+              <strong>{{ employe.prenom }} {{ employe.nom }}</strong> - {{ employe.email }} - {{ employe.fonction }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<!-- Modal de Modification de Département -->
+<div *ngIf="currentEditForm === 'departement'" class="modal show d-block" tabindex="-1" style="background: rgba(0, 0, 0, 0.1);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier le département</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeDepartementEditForm()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateDepartement()" #departementForm="ngForm">
+          <!-- Nom du Département -->
+          <div class="form-group mb-3">
+            <label for="name">Nom du Département</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="currentDepartement.name"
+              name="name"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['name'].invalid && (departementForm.controls['name'].dirty || departementForm.controls['name'].touched)}"
+              placeholder="Entrez le nom du département">
+            <small class="text-danger" *ngIf="departementForm.controls['name']?.invalid && (departementForm.controls['name']?.dirty || departementForm.controls['name']?.touched)">
+              Le nom du département est requis et ne peut contenir que des lettres, chiffres et espaces.
+            </small>
+          </div>
+
+          <!-- Responsable du département -->
+          <div class="form-group mb-3">
+            <label for="responsable_departement">Responsable</label>
+            <input
+              type="text"
+              id="responsable_departement"
+              [(ngModel)]="currentDepartement.responsable_departement"
+              name="responsable_departement"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['responsable_departement'].invalid && (departementForm.controls['responsable_departement'].dirty || departementForm.controls['responsable_departement'].touched)}"
+              placeholder="Entrez le nom du responsable">
+            <small class="text-danger" *ngIf="departementForm.controls['responsable_departement']?.invalid && (departementForm.controls['responsable_departement']?.dirty || departementForm.controls['responsable_departement']?.touched)">
+              Le nom du responsable est requis et ne peut contenir que des lettres et espaces.
+            </small>
+          </div>
+
+          <!-- Nombre de personnes -->
+          <div class="form-group mb-3">
+            <label for="nombre_personne">Nombre de Personnes</label>
+            <input
+              type="number"
+              id="nombre_personne"
+              [(ngModel)]="currentDepartement.nombre_personne"
+              name="nombre_personne"
+              required
+              min="1"
+              max="100"
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['nombre_personne'].invalid && (departementForm.controls['nombre_personne'].dirty || departementForm.controls['nombre_personne'].touched)}">
+            <small class="text-danger" *ngIf="departementForm.controls['nombre_personne']?.invalid && (departementForm.controls['nombre_personne']?.dirty || departementForm.controls['nombre_personne']?.touched)">
+              Veuillez entrer le nombre de personnes.
+            </small>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              [(ngModel)]="currentDepartement.description"
+              name="description"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['description'].invalid && (departementForm.controls['description'].dirty || departementForm.controls['description'].touched)}">
+            </textarea>
+            <small class="text-danger" *ngIf="departementForm.controls['description']?.invalid && (departementForm.controls['description']?.dirty || departementForm.controls['description']?.touched)">
+              La description est obligatoire.
+            </small>
+          </div>
+
+          <!-- Année -->
+          <div class="form-group mb-3">
+            <label for="annee">Année</label>
+            <input
+              type="number"
+              id="annee"
+              [(ngModel)]="currentDepartement.annee"
+              name="annee"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['annee'].invalid && (departementForm.controls['annee'].dirty || departementForm.controls['annee'].touched)}">
+            <small class="text-danger" *ngIf="departementForm.controls['annee']?.invalid && (departementForm.controls['annee']?.dirty || departementForm.controls['annee']?.touched)">
+              L'année est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure d'entrée -->
+          <div class="form-group mb-3">
+            <label for="heure_entree">Heure d'entrée</label>
+            <input
+              type="time"
+              id="heure_entree"
+              [(ngModel)]="currentDepartement.heure_entree"
+              name="heure_entree"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['heure_entree'].invalid && (departementForm.controls['heure_entree'].dirty || departementForm.controls['heure_entree'].touched)}">
+            <small class="text-danger" *ngIf="departementForm.controls['heure_entree']?.invalid && (departementForm.controls['heure_entree']?.dirty || departementForm.controls['heure_entree']?.touched)">
+              L'heure d'entrée est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure de sortie -->
+          <div class="form-group mb-3">
+            <label for="heure_sortie">Heure de sortie</label>
+            <input
+              type="time"
+              id="heure_sortie"
+              [(ngModel)]="currentDepartement.heure_sortie"
+              name="heure_sortie"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': departementForm.controls['heure_sortie'].invalid && (departementForm.controls['heure_sortie'].dirty || departementForm.controls['heure_sortie'].touched)}">
+            <small class="text-danger" *ngIf="departementForm.controls['heure_sortie']?.invalid && (departementForm.controls['heure_sortie']?.dirty || departementForm.controls['heure_sortie']?.touched)">
+              L'heure de sortie est obligatoire.
+            </small>
+          </div>
+
+          <!-- Bouton pour afficher les employés associés -->
+          <button type="button" class="btn btn-info" (click)="getEmployes(currentDepartement.id)">Employés Associés</button>
+
+          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+        </form>
+
+        <!-- Liste des employés associés -->
+        <div class="modal-body">
+          <ul class="list-group">
+            <li *ngFor="let employe of employesAssocies" class="list-group-item">
+              <strong>{{ employe.prenom }} {{ employe.nom }}</strong> - {{ employe.email }} - {{ employe.fonction }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Modification de Cohorte -->
+<div *ngIf="currentEditForm === 'cohorte'" class="modal show d-block" tabindex="-1" style="background: rgba(0, 0, 0, 0.1);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier la Cohorte</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeCohorteEditForm()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateCohorte()" #cohorteForm="ngForm">
+          <!-- Nom de la cohorte -->
+          <div class="form-group mb-3">
+            <label for="nom">Nom de la Cohorte</label>
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="currentCohorte.nom"
+              name="nom"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['nom'].invalid && (cohorteForm.controls['nom'].dirty || cohorteForm.controls['nom'].touched)}"
+              placeholder="Entrez le nom de la cohorte">
+            <small class="text-danger" *ngIf="cohorteForm.controls['nom']?.invalid && (cohorteForm.controls['nom']?.dirty || cohorteForm.controls['nom']?.touched)">
+              Le nom de la cohorte est requis et ne peut contenir que des lettres, chiffres et espaces.
+            </small>
+          </div>
+
+          <!-- Responsable de la cohorte -->
+          <div class="form-group mb-3">
+            <label for="responsable_cohorte">Responsable</label>
+            <input
+              type="text"
+              id="responsable_cohorte"
+              [(ngModel)]="currentCohorte.responsable_cohorte"
+              name="responsable_cohorte"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['responsable_cohorte'].invalid && (cohorteForm.controls['responsable_cohorte'].dirty || cohorteForm.controls['responsable_cohorte'].touched)}"
+              placeholder="Entrez le nom du responsable">
+            <small class="text-danger" *ngIf="cohorteForm.controls['responsable_cohorte']?.invalid && (cohorteForm.controls['responsable_cohorte']?.dirty || cohorteForm.controls['responsable_cohorte']?.touched)">
+              Le nom du responsable est requis et ne peut contenir que des lettres et espaces.
+            </small>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              [(ngModel)]="currentCohorte.description"
+              name="description"
+              class="form-control"
+              required
+              [ngClass]="{'is-invalid': cohorteForm.controls['description'].invalid && (cohorteForm.controls['description'].dirty || cohorteForm.controls['description'].touched)}">
+            </textarea>
+            <small class="text-danger" *ngIf="cohorteForm.controls['description']?.invalid && (cohorteForm.controls['description']?.dirty || cohorteForm.controls['description']?.touched)">
+              La description est obligatoire.
+            </small>
+          </div>
+
+          <!-- Nombre de personnes -->
+          <div class="form-group mb-3">
+            <label for="nombre_personnes">Nombre de Personnes</label>
+            <input
+              type="number"
+              id="nombre_personnes"
+              [(ngModel)]="currentCohorte.nombre_personnes"
+              name="nombre_personnes"
+              min="1"
+              max="100"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['nombre_personnes'].invalid && (cohorteForm.controls['nombre_personnes'].dirty || cohorteForm.controls['nombre_personnes'].touched)}">
+            <small class="text-danger" *ngIf="cohorteForm.controls['nombre_personnes']?.invalid && (cohorteForm.controls['nombre_personnes']?.dirty || cohorteForm.controls['nombre_personnes']?.touched)">
+              Veuillez entrer le nombre de personnes.
+            </small>
+          </div>
+
+          <!-- Date de début -->
+          <div class="form-group mb-3">
+            <label for="date_debut">Date de début</label>
+            <input
+              type="date"
+              id="date_debut"
+              [(ngModel)]="currentCohorte.date_debut"
+              name="date_debut"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['date_debut'].invalid && (cohorteForm.controls['date_debut'].dirty || cohorteForm.controls['date_debut'].touched)}">
+            <small class="text-danger" *ngIf="cohorteForm.controls['date_debut']?.invalid && (cohorteForm.controls['date_debut']?.dirty || cohorteForm.controls['date_debut']?.touched)">
+              La date de début est obligatoire.
+            </small>
+          </div>
+
+          <!-- Date de fin -->
+          <div class="form-group mb-3">
+            <label for="date_fin">Date de fin</label>
+            <input
+              type="date"
+              id="date_fin"
+              [(ngModel)]="currentCohorte.date_fin"
+              name="date_fin"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['date_fin'].invalid && (cohorteForm.controls['date_fin'].dirty || cohorteForm.controls['date_fin'].touched)}">
+            <small class="text-danger" *ngIf="cohorteForm.controls['date_fin']?.invalid && (cohorteForm.controls['date_fin']?.dirty || cohorteForm.controls['date_fin']?.touched)">
+              La date de fin est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure d'entrée -->
+          <div class="form-group mb-3">
+            <label for="heure_entree">Heure d'entrée</label>
+            <input
+              type="time"
+              id="heure_entree"
+              [(ngModel)]="currentCohorte.heure_entree"
+              name="heure_entree"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['heure_entree'].invalid && (cohorteForm.controls['heure_entree'].dirty || cohorteForm.controls['heure_entree'].touched)}">
+            <small class="text-danger" *ngIf="cohorteForm.controls['heure_entree']?.invalid && (cohorteForm.controls['heure_entree']?.dirty || cohorteForm.controls['heure_entree']?.touched)">
+              L'heure d'entrée est obligatoire.
+            </small>
+          </div>
+
+          <!-- Heure de sortie -->
+          <div class="form-group mb-3">
+            <label for="heure_sortie">Heure de sortie</label>
+            <input
+              type="time"
+              id="heure_sortie"
+              [(ngModel)]="currentCohorte.heure_sortie"
+              name="heure_sortie"
+              required
+              class="form-control"
+              [ngClass]="{'is-invalid': cohorteForm.controls['heure_sortie'].invalid && (cohorteForm.controls['heure_sortie'].dirty || cohorteForm.controls['heure_sortie'].touched)}">
+            <small class="text-danger" *ngIf="cohorteForm.controls['heure_sortie']?.invalid && (cohorteForm.controls['heure_sortie']?.dirty || cohorteForm.controls['heure_sortie']?.touched)">
+              L'heure de sortie est obligatoire.
+            </small>
+          </div>
+
+          <!-- Bouton pour afficher les apprenants associés -->
+          <button type="button" class="btn btn-info" (click)="getApprenantsAssocies(currentCohorte.id)">Apprenants Associés</button>
+
+          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+        </form>
+
+        <!-- Liste des apprenants associés -->
+        <div *ngIf="apprenantsAssocies.length > 0" class="mt-3">
+          <h5>Apprenants Associés :</h5>
+          <ul class="list-group">
+            <li *ngFor="let apprenant of apprenantsAssocies" class="list-group-item d-flex justify-content-between">
+              <span>{{ apprenant.nom }} {{ apprenant.prenom }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal pour Ajouter un Employé -->
+<div class="custom-modal" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true" [ngClass]="{'show': showEmployeeForm}">
+<div class="custom-modal-content">
+<h2>Ajouter un Employé</h2>
+<form (ngSubmit)="onSubmitForm()" #employeeForm="ngForm">
+<div class="form-row">
+  <div class="form-group">
+    <label for="nom">Nom <span class="required">*</span></label>
+    <input type="text" id="nom" name="nom" [(ngModel)]="employe.nom" required #nom="ngModel"
+          pattern="[A-Za-z ]+" (input)="validateField(nom)"  placeholder="Entrez le nom " class="form-control">
+    <div *ngIf="nom.invalid && nom.touched" class="error-message">Le nom ne peut contenir que des lettres et des espaces.</div>
+  </div>
+
+  <div class="form-group">
+    <label for="prenom">Prénom <span class="required">*</span></label>
+    <input type="text" id="prenom" name="prenom" [(ngModel)]="employe.prenom" required #prenom="ngModel"
+          pattern="[A-Za-z ]+" (input)="validateField(prenom)"  placeholder="Entrez le prénom " class="form-control">
+    <div *ngIf="prenom.invalid && prenom.touched" class="error-message">Le prénom ne peut contenir que des lettres et des espaces.</div>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group">
+    <label for="email">Email <span class="required">*</span></label>
+    <input type="email" id="email" name="email" [(ngModel)]="employe.email" required #email="ngModel"
+          (input)="validateField(email)"  placeholder="Entrez l'email" class="form-control">
+    <div *ngIf="email.invalid && email.touched" class="error-message">L'email doit être valide.</div>
+  </div>
+
+  <div class="form-group">
+    <label for="telephone">Téléphone <span class="required">*</span></label>
+    <input type="text" id="telephone" name="telephone" [(ngModel)]="employe.telephone" required #telephone="ngModel"
+          pattern="^(77|78|76|75)[0-9]{7}$" (input)="validateField(telephone)"  placeholder="Entrez le téléphone" class="form-control">
+    <div *ngIf="telephone.invalid && telephone.touched" class="error-message">
+      Le téléphone doit comporter 9 chiffres et commencer par 77, 78, 76, ou 75.
+    </div>
+  </div>
+</div>
+<div class="form-row">
+<!-- Champ Adresse -->
+<div class="form-group">
+<label for="adresse">Adresse <span class="required">*</span></label>
+<input type="text" id="adresseEmploye" name="adresse" [(ngModel)]="employe.adresse" required #adresse="ngModel" minlength="5" (blur)="validateField(adresse)"  placeholder="Entrez l'adresse"  class="form-control">
+<div *ngIf="adresse.invalid && adresse.touched" class="error-message">
+L'adresse est requise et doit comporter au moins 5 caractères.
+</div>
+</div>
+
+<!-- Champ Fonction -->
+<div class="form-group">
+<label for="fonction">Fonction <span class="required">*</span></label>
+<input type="text" id="fonction" name="fonction" [(ngModel)]="employe.fonction" required #fonction="ngModel"
+     pattern="[A-Za-z ]+" (blur)="validateField(fonction)"  placeholder="Entrez le fonction" class="form-control">
+<div *ngIf="fonction.invalid && fonction.touched" class="error-message">
+La fonction ne peut contenir que des lettres et des espaces.
+</div>
+</div>
+</div>
+
+<div class="form-row">
+  <!-- Sélection du rôle -->
+  <div class="form-group ">
+    <label for="role">Rôle <span class="required">*</span></label>
+    <select id="role" name="role" [(ngModel)]="employe.role" required #role="ngModel" class="form-control">
+      <option value="" disabled selected>Sélectionnez un rôle</option>
+      <option value="utilisateur">Employé</option>
+    </select>
+    <div *ngIf="role.invalid && role.touched" class="error-message text-danger">
+      Le rôle est requis.
+    </div>
+  </div>
+
+  <!-- Mot de passe -->
+  <div class="form-group col-md-6">
+    <label for="password">Mot de passe <span class="required">*</span></label>
+    <div class="password-wrapper position-relative">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        id="password"
+        name="password"
+        class="form-control"
+        [(ngModel)]="employe.password"
+        required
+        minlength="6"
+        #password="ngModel"
+        placeholder="Mot de passe"
+      />
+      <span (click)="togglePassword()" class="eye-icon position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+        <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+      </span>
+    </div>
+    <div *ngIf="password.invalid && password.touched" class="error-message text-danger">
+      Le mot de passe est requis et doit comporter au moins 8 caractères.
+    </div>
+  </div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+  <label for="photo">Photo</label>
+  <input type="file" id="photo" name="photo" (change)="onFileSelected($event)"  class="form-control">
+</div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="cancel-button" (click)="closeModal()">Annuler</button>
+  <button type="submit" [disabled]="employeeForm.invalid" class="submit-button">Ajouter</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Modal pour Ajouter un Apprenant -->
+<div class="custom-modal" id="apprenantModal" tabindex="-1" aria-labelledby="apprenantModalLabel" aria-hidden="true" [ngClass]="{'show': showApprenantForm}">
+<div class="custom-modal-content">
+<h2>Ajouter un Apprenant</h2>
+<form (ngSubmit)="onSubmitForm()" #apprenantForm="ngForm">
+  <div class="form-row">
+            <div class="form-group">
+              <label for="nomApprenant">Nom <span class="required">*</span> </label>
+              <input type="text" id="nomApprenant" name="nom" [(ngModel)]="apprenant.nom" required #nomApprenant="ngModel"
+                    pattern="[A-Za-z ]+" (input)="validateField(nomApprenant)"  placeholder="Entrez le nom"  class="form-control">
+              <div *ngIf="nomApprenant.invalid && nomApprenant.touched" class="error-message">Le nom ne peut contenir que des lettres et des espaces.</div>
+              </div>
+              <div class="form-group">
+                <label for="prenomApprenant">Prénom  <span class="required">*</span> </label>
+                <input type="text" id="prenomApprenant" name="prenom" [(ngModel)]="apprenant.prenom" required #prenomApprenant="ngModel"
+                      pattern="[A-Za-z ]+" (input)="validateField(prenomApprenant)"  placeholder="Entrez le prénom"  class="form-control">
+                <div *ngIf="prenomApprenant.invalid && prenomApprenant.touched" class="error-message">Le prénom ne peut contenir que des lettres et des espaces.</div>
+              </div>
+  </div>
+        <div class="form-row">
+              <div class="form-group">
+                <label for="emailApprenant">Email <span class="required">*</span></label>
+                <input type="email" id="emailApprenant" name="email" [(ngModel)]="apprenant.email" required #emailApprenant="ngModel"
+                      (input)="validateField(emailApprenant)"  placeholder="Entrez l'email" class="form-control">
+                <div *ngIf="emailApprenant.invalid && emailApprenant.touched" class="error-message">L'email doit être valide.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="telephoneApprenant">Téléphone <span class="required">*</span></label>
+                <input type="text" id="telephoneApprenant" name="telephone" [(ngModel)]="apprenant.telephone" required #telephoneApprenant="ngModel"
+                      pattern="^(77|78|76|75)[0-9]{7}$" (input)="validateField(telephoneApprenant)"  placeholder="Entrez le téléphone" class="form-control">
+                <div *ngIf="telephoneApprenant.invalid && telephoneApprenant.touched" class="error-message">
+                  Le téléphone doit comporter 9 chiffres et commencer par 77, 78, 76, ou 75.
+                </div>
+              </div>
+       </div>
+        <div class="form-row">
+              <div class="form-group">
+                <label for="adresseApprenant">Adresse <span class="required">*</span></label>
+                <input type="text" id="adresseApprenant" name="adresse" [(ngModel)]="apprenant.adresse" required #adresseApprenant="ngModel"  placeholder="Entrez l'adresse"  class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="roleApprenant">Rôle <span class="required">*</span></label>
+                <select id="roleApprenant" name="role" [(ngModel)]="apprenant.role" required #roleApprenant="ngModel" class="form-control" >
+                  <option value="" disabled selected>Sélectionnez un rôle</option>
+                  <option value="" disabled selected>Sélectionnez un rôle</option>
+                  <option value="apprenant">Apprenant</option>
+                </select>
+                <div *ngIf="roleApprenant.invalid && roleApprenant.touched" class="error-message">Le rôle est requis.</div>
+              </div>
+
+        </div>
+         
+         <div class="form-row">
+            <div class="form-group">
+              <label for="photoApprenant">Photo <span class="required">*</span></label>
+              <input type="file" id="photo" name="photo" (change)="onFileSelected($event)"  class="form-control">
+            </div>
+         </div>
+            <div class="modal-footer">
+              <button type="button" class="cancel-button" (click)="closeModal()">Annuler</button>
+              <button type="submit" [disabled]="apprenantForm.invalid" class="submit-button">Ajouter</button>
+            </div>
+        
+        </form>
+      </div>
+
+
+  
+
+
+
+
+      

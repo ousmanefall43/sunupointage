@@ -1,0 +1,86 @@
+<div class="main-container">
+  <!-- Appel du composant Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="content">
+    <header class="header">
+      <div class="user-info">
+        <img src="assets/avatar.jpg" alt="Avatar" class="avatar" />
+        <span>Groupe 2</span>
+      </div>
+    </header>
+
+    <div class="pointages-container">
+      <h2>Liste des Pointages</h2>
+      <table class="pointages-table">
+        <thead>
+          <tr>
+            <th>Prénom et Nom</th>
+            <th>Date</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pointage of pointages">
+            <td>{{ pointage.prenom }} {{ pointage.nom }}</td>
+            <td>{{ pointage.date | date: 'dd-MM-yyyy' }}</td>
+            <td>{{ pointage.firstTime }}</td>
+            <td>{{ pointage.secondTime }}</td>
+            <td>
+              <span [ngStyle]="{ 'color': pointage.color }">
+                {{ pointage.status }}
+              </span>
+            </td>
+            <td>
+              <i class="fas fa-edit action-icon" (click)="openModal(pointage)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de succès -->
+<div class="modal success-modal" *ngIf="isSuccessModalOpen">
+  <div class="modal-content">
+    <h3>Succès !</h3>
+    <p>La modification a été enregistrée avec succès.</p>
+    <button class="btn btn-primary" (click)="closeSuccessModal()">OK</button>
+  </div>
+</div>
+<button (click)="isSuccessModalOpen = true">Afficher le modal de succès</button>
+
+
+<!-- Modal -->
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <h3>Modifier le Pointage</h3>
+    <form (ngSubmit)="submitModification()">
+      <div class="form-group">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" [(ngModel)]="selectedPointage.nom" name="nom" required />
+      </div>
+      <div class="form-group">
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" [(ngModel)]="selectedPointage.prenom" name="prenom" required />
+      </div>
+      <div class="form-group">
+        <label for="firstTime">Début :</label>
+        <input type="time" id="firstTime" [(ngModel)]="selectedPointage.firstTime" name="firstTime" required />
+      </div>
+      <div class="form-group">
+        <label for="secondTime">Fin :</label>
+        <input type="time" id="secondTime" [(ngModel)]="selectedPointage.secondTime" name="secondTime" required />
+      </div>
+      <button (click)="onEnregistrer()" [disabled]="isSaving" class="btn btn-primary">
+        Enregistrer
+      </button>
+            <button type="button" class="btn-close" (click)="closeModal()">Fermer</button>
+    </form>
+  </div>
+</div>

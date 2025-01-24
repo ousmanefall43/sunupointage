@@ -1,0 +1,95 @@
+<app-sidebar></app-sidebar> <!-- Barre latérale -->
+<div class="main-content">
+  <div class="filter-section">
+    <!-- Bouton Ajouter -->
+    <div class="action-button-container">
+      <button (click)="addItem()" class="action-button">Ajouter</button>
+    </div>
+
+    <div class="filter-right">
+      <!-- Barre de recherche avec l'icône -->
+      <div class="search-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          (input)="filterData()" 
+          placeholder="Rechercher..." 
+          class="search-input"
+        />
+        <span class="search-icon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+
+      <!-- Sélecteur de filtre -->
+      <div class="filter-select-container">
+        <label>Filtrer par département :</label>
+        <select 
+          [(ngModel)]="selectedDepartment" 
+          (change)="filterEmployees(selectedDepartment)" 
+          class="filter-select"
+        >
+          <option value="">Tous</option>
+          <option 
+            *ngFor="let dept of departments" 
+            [value]="dept"
+          >
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+            <th>Photo</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Fonction / Matricule</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>
+            <div class="name-checkbox-container">
+              <input type="checkbox" [(ngModel)]="user.selected">
+              <img [src]="user.photo || 'default-photo.jpg'" alt="Photo" width="40">
+            </div>
+          </td>
+          <td>
+            {{ user.prenom }} {{ user.nom }}
+
+          </td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role || user.matricule }}</td>
+          <td>
+            <button (click)="editUser(user)">Modifier</button>
+            <button (click)="viewUser(user)">Voir</button>
+            <button (click)="blockUser(user)">Bloquer</button>
+            <button (click)="deleteUser(user)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button 
+      (click)="changePage(currentPage - 1)" 
+      [disabled]="currentPage === 1"
+    >
+      Précédent
+    </button>
+    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+    <button 
+      (click)="changePage(currentPage + 1)" 
+      [disabled]="currentPage === totalPages"
+    >
+      Suivant
+    </button>
+  </div>
+</div>

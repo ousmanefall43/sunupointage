@@ -1,0 +1,674 @@
+/* Mise à jour des styles pour une interface plus claire et propre */
+
+.main-content {
+    margin-left: 340px; /* Décalage correspondant à la largeur de la sidebar */
+    padding: 10px;
+    width: calc(100% - 250px); /* Ajuste la largeur pour éviter le débordement */
+    background-color: #f9f9f9;
+    height: 80vh;
+    box-sizing: border-box;
+    margin-top: 0%;
+    width: 80%; /* Réduire la largeur totale à 80% de la page */
+    margin-top: 7%;
+
+  }
+  /* Mise à jour des styles pour une interface plus claire et propre */
+
+  .main-content {
+    margin-left: 100px; /* Décalage pour le contenu */
+    /* Conteneur principal avec CSS Grid */
+      padding: 200px; /* Retirer le padding interne */
+     
+     
+      
+
+  }
+  .filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between; /* Alignement des éléments à gauche et à droite */
+    align-items: center;
+
+  }
+  
+  .filter-select, .search-input, .action-button {
+    padding: 8px;
+    margin-right: 10px;
+  }
+  
+  /* Styles pour le filtre et la recherche à droite */
+  .filter-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-info {
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  
+  
+  .filter-select, .search-input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Bouton Ajouter */
+  .button {
+    background-color: #137C8B;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 8px;
+
+  }
+  
+  .button:hover {
+    background-color: #106c76;
+  }
+  /* Style pour les icônes dans les actions */
+.actions button {
+    
+    padding: 5px;
+    cursor: pointer;
+    background: none; /* Pas de fond pour les boutons */
+    border: none; /* Pas de bordure pour les boutons */
+    font-size: 18px; /* Taille de l'icône */
+    color: #106c76; /* Couleur des icônes */
+  }
+  
+ 
+  
+  /* Vous pouvez ajouter un style spécifique pour le bouton "Ajouter" si vous voulez le différencier */
+  .actions .action-button {
+    font-size: 20px; /* Augmente la taille de l'icône si nécessaire */
+    color: #106c76; /* Couleur verte pour l'icône plus (ajouter) */
+  }
+  
+  
+  
+  /* Tableau des données */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse; /* Fusion des bordures pour éviter des doublons */
+  margin-top: 20px;
+}
+
+.data-table th, .data-table td {
+  padding: 12px;
+  text-align: center;
+}
+
+/* Lignes horizontales */
+.data-table tr {
+  border-bottom: 1px solid #ddd; /* Ajout d'une bordure horizontale entre chaque ligne */
+}
+
+/* Couleur d'arrière-plan pour l'en-tête */
+.data-table th {
+  background-color: #f4f4f4;
+  font-weight: bold; /* Mettre les titres en gras */
+}
+
+/* Suppression de la bordure de la case à cocher */
+.data-table td input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+  
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination-button {
+    background-color: #137C8B;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 4px;
+  }
+  
+  .pagination-button:hover {
+    background-color: #106c76;
+  }
+  
+  /* Bouton Supprimer les éléments sélectionnés */
+  .delete-button {
+    background-color: #137C8B;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 4px;
+  }
+  
+  .delete-button:hover {
+    background-color: #106c76;
+  }
+  
+
+ 
+.search-bar {
+  position: relative;
+  margin-right: 20px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; /* Décalage de l'icône par rapport à la gauche */
+    top: 50%; /* Centrer l'icône verticalement */
+    transform: translateY(-50%); /* Ajuste l'alignement vertical */
+    font-size: 18px; /* Taille de l'icône */
+    color: #aaa; /* Couleur de l'icône */
+  }
+  
+  .search-input {
+    padding: 5px 10px 5px 30px; /* Ajouter de l'espace à gauche pour l'icône */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 14px;
+    box-sizing: border-box; /* Assure que la largeur inclut la bordure et le padding */
+  }
+
+
+
+.name-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espace entre la case à cocher et le nom */
+  }
+  
+  .name-checkbox-container input[type="checkbox"] {
+    margin: 0; /* Enlever la marge autour de la case à cocher */
+  }
+  
+
+  
+
+
+  /* Modal */
+/* Modal */
+/* Style de la modal */
+ .modal {
+  display: none; /* caché par défaut */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 1050;
+  padding-top: 50px;
+}
+
+/* Afficher la modal lorsqu'elle a la classe 'show' */
+.modal.show {
+  display: block;
+}
+
+/* Boîte de la modal avec une largeur maximale */
+.modal-dialog {
+  max-width: 700px;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* En-tête de la modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: transparent; /* Suppression du fond coloré */
+  color: #137C8B;
+}
+
+.modal-header .close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #137C8B;
+  cursor: pointer;
+}
+
+.modal-header .close:hover {
+  color: #0d6e73; /* Couleur au survol */
+}
+
+/* Contenu de la modal */
+.modal-body {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Alignement des champs de formulaire avec des lignes sous les inputs */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Style des labels */
+label {
+  color: #292D32;
+  font-size: Poppins;
+}
+
+/* Style des champs de saisie avec une ligne sous l'input */
+.form-control {
+  background-color: transparent; /* Transparent pour enlever le fond */
+  border: none; /* Suppression de la bordure autour de l'input */
+  border-bottom: 2px solid #137C8B; /* Ligne sous l'input */
+  color: #137C8B; /* Couleur du texte */
+  width: 100%;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+} 
+
+
+/* Style spécifique pour le champ textarea */
+textarea.form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #137C8B; /* Ligne sous la zone de texte */
+  color: #137C8B;
+  padding: 5px 0;
+  height: 120px;
+
+}
+
+textarea.form-control:focus {
+  border-bottom: 2px solid #0d6e73;
+}
+
+/* Style des boutons */
+.btn {
+  background-color: #137C8B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0d6e73; /* Couleur plus foncée au survol */
+}
+
+/* Le bouton fermer (X) */
+
+
+/* Espacement entre les éléments du formulaire */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Style du texte dans la modal */
+.modal-body p {
+  font-size: 1rem;
+  color: #137C8B;
+}
+
+
+.modal-header .close span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(212, 14, 14);
+}
+
+
+
+.list-group-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item:hover {
+  background-color: #f1f1f1;
+}
+
+.list-group-item span {
+  font-weight: bold;
+}
+
+/* Style du bouton "Retirer" */
+.list-group-item .btn-danger {
+  background-color: #ff4d4d;
+  border-color: #ff4d4d;
+  color: white;
+}
+
+.list-group-item .btn-danger:hover {
+  background-color: #e03e3e;
+  border-color: #e03e3e;
+}
+
+
+
+/* Ajouter un espace sous le bouton Employés Associés et avant Modifier */
+.btn-info {
+  margin-bottom: 10px; /* Espacer le bouton Employés Associés */
+}
+
+/* Espacer le bouton Modifier */
+.btn-primary {
+  margin-top: 20px; /* Décalage vers le bas */
+  display: block;
+  width: 100%;
+  text-align: center; /* Centrer le bouton */
+}
+
+/* Modal de confirmation */
+.confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1); /* Fond légèrement transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenu du modal */
+.confirmation-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Boutons de confirmation */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.confirm-button, .cancel-button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 45%;
+  font-size: 16px;
+  border: none;
+}
+
+/* Bouton confirmer - rouge */
+
+
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+/* Boutons de confirmation */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.confirm-button, .cancel-button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 45%;
+  font-size: 16px;
+  border: none;
+}
+
+/* Bouton confirmer - rouge */
+.confirm-button {
+  background-color: red;
+  color: white;
+}
+
+
+/* Toast notification (bannière) */
+.notification {
+  position: fixed;
+  top: 20px; /* Place le message en haut de la page */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50; /* Vert pour le succès */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  display: none; /* Initialement caché */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.notification.error {
+  background-color: #f44336; /* Rouge pour l'erreur */
+}
+
+.notification.show {
+  display: block; /* Afficher la notification */
+  opacity: 1;
+}
+
+
+body {
+  background-color: #f8f9fa; /* Couleur de fond de la page */
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px; /* Ajoute de l'espace entre les blocs */
+  width: 1300px;
+}
+
+.stat-box {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre pour rendre les blocs plus visibles */
+  margin: 10px;
+  width: calc(25% - 40px); /* Ajuste la largeur des blocs */
+  box-sizing: border-box;
+  transition: transform 0.2s; /* Ajoute une transition pour l'effet de survol */
+}
+
+.stat-box:hover {
+  transform: scale(1.05); /* Effet de survol */
+}
+
+.icon-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px; /* Augmente la taille du cercle */
+  height: 80px; /* Augmente la taille du cercle */
+  border-radius: 50%;
+  margin: 0 auto 20px;
+}
+
+.icon-circle i {
+  font-size: 36px; /* Augmente la taille des icônes */
+}
+
+.stat-info {
+  margin-top: 10px;
+}
+
+.stat-title {
+  font-size: 18px; /* Augmente la taille du titre */
+  color: #333; /* Couleur du titre */
+}
+
+.stat-number {
+  font-size: 28px; /* Augmente la taille du nombre */
+  font-weight: bold;
+  padding: 10px 20px; /* Ajoute du padding pour le nombre */
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.bg-primary {
+  background-color: #007bff;
+}
+
+.bg-success {
+  background-color: #28a745;
+}
+
+.bg-warning {
+  background-color: #ffc107;
+}
+
+.bg-danger {
+  background-color: #dc3545;
+}
+
+.text-white {
+  color: #fff;
+}
+
+
+/* Style pour la modal */
+.custom-modal {
+  display: none; /* Masqué par défaut */
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+}
+
+.custom-modal.show {
+  display: block; /* Affiché lorsque la classe 'show' est ajoutée */
+}
+
+.custom-modal-content {
+  position: relative;
+  margin: 1.75rem auto;
+  padding: 2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.3rem;
+  background-color: #fff;
+  width: 50%; /* Largeur de la modal */
+  max-width: 500px; /* Largeur maximale */
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.custom-modal-content h2 {
+  margin-top: 0;
+  font-family: 'robotto';
+  font-size: 1em;
+  text-align: center;
+}
+
+.custom-modal-content .form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.custom-modal-content .form-group {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.custom-modal-content .form-group:last-child {
+  margin-right: 0;
+}
+
+.custom-modal-content .error-message {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.custom-modal-content .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.custom-modal-content .modal-footer .cancel-button {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.custom-modal-content .modal-footer .submit-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.custom-modal-content .modal-footer .submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.custom-modal-content .password-wrapper {
+  position: relative;
+}
+
+.custom-modal-content .password-wrapper .eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
+.required {
+  color: red;
+  font-weight: bold;
+}
